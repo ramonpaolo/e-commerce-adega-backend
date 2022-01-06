@@ -2,6 +2,7 @@
 /node_modules
 /dist
 /src/settings/*.json
+/__tests__
 
 # ----  Files
 .env
