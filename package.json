@@ -34,8 +34,8 @@
   },
   "scripts": {
     "start": "node ./dist/routes.js",
-    "prestart": "tsc",
     "test": "jest",
+    "build": "tsc",
     "serve": "nodemon ./src/routes.ts"
   },
   "keywords": [
