@@ -1,8 +1,8 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Servidor de API REST para e-commerce de bebidas",
+  "main": "./src/routes.ts",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.1",
@@ -40,7 +40,7 @@
     "test": "jest",
     "serve": "nodemon ./src/routes.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": ["nodejs", "typescript", "express", "api"],
+  "author": "Ramon Paolo Maran",
+  "license": "MIT"
 }
