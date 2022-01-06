@@ -13,6 +13,8 @@ import sqlite from "./settings/sqlite3";
 
 const ip = os.networkInterfaces()["Ethernet 2"]![1]["address"];
 
+const port = process.env.PORT || 5000;
+
 connect();
 firebase;
 sqlite();
@@ -28,4 +30,4 @@ app.use(
 app.use(shopRoutes);
 app.use(adminRoutes);
 
-app.listen(5000, () => console.log(`${ip}:5000`));
+app.listen(port, () => console.log(`${ip}:${port}`));
