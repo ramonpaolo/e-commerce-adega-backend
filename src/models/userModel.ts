@@ -1,10 +1,6 @@
 import mongoose from "mongoose";
 
 const User = new mongoose.Schema({
-  id: {
-    type: String,
-    unique: true
-  },
   name: {
     type: String,
     required: true,
@@ -24,20 +20,21 @@ const User = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    minlength: 8,
-    maxlength: 24,
   },
   comments: {
     type: Array,
+    default: [],
   },
   gifts: {
     type: Array,
+    default: [],
   },
-  type: Array,
   searchHistoric: {
+    type: Array,
   },
   purchasesHistoric: {
     type: Array,
+    default: [],
   },
   address: {
     type: Object,
