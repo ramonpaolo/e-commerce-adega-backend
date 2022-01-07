@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "description": "Servidor de API REST para e-commerce de bebidas",
-  "main": "./src/routes.ts",
+  "main": "./src/server.ts",
   "dependencies": {
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
@@ -33,10 +33,10 @@
     "node": "14.x"
   },
   "scripts": {
-    "start": "node ./dist/routes.js",
+    "start": "node ./dist/server.js",
     "test": "jest",
     "build": "tsc",
-    "serve": "nodemon ./src/routes.ts"
+    "serve": "nodemon ./src/server.ts"
   },
   "keywords": [
     "nodejs",
