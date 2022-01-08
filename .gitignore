@@ -3,6 +3,7 @@
 /dist
 /src/settings/*.json
 /__tests__
+/coverage
 
 # ----  Files
 
