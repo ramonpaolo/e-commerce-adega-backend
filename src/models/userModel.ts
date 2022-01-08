@@ -29,8 +29,13 @@ const User = new mongoose.Schema({
     type: Array,
     default: [],
   },
+  cart: {
+    type: Array,
+    default: []
+  },
   searchHistoric: {
     type: Array,
+    default: []
   },
   purchasesHistoric: {
     type: Array,
