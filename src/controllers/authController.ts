@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+import validator from "validator";
 
 //---- Models
 import UserModel from "../models/userModel";
@@ -12,6 +13,22 @@ import IUser from "../interfaces/user";
 dotenv.config();
 
 class AuthValidationController {
+  public async verifyEmail(email: string): Promise<string | null> {
+    if (email.length <= 8 || email.length >= 64) {
+      return "less or more email";
+    }
+    if (validator.isEmail(email) === false) return "email not validity";
+    return null;
+  }
+
+  public async verifyPassword(password: string) {
+    if (password.length <= 8 || password.length >= 64) {
+      return "less or more password";
+    }
+    if (validator.isStrongPassword(password, { minLength: 8 }) === false)
+      return "password not strong";
+    return null;
+  }
   public async createJsonWebToken(user: IUser): Promise<string> {
     return jwt.sign(
       {
@@ -34,7 +51,7 @@ class AuthValidationController {
     if (!token) return res.send(null);
     try {
       let payload = jwt.verify(token, String(process.env.JWT_KEY));
-      console.log(payload);
+      res.locals.user = Object(payload);
       return next();
     } catch (e) {
       console.error("Token expired");
@@ -42,29 +59,26 @@ class AuthValidationController {
     }
   }
 
-  public async verifyAccount(req: Request): Promise<any> {
-    const { email } = req.body;
-
+  public async verifyAccount(email: string): Promise<IUser | null> {
     let user: IUser | null = await UserModel.findOne({ email });
 
     if (!user) return null;
 
-    return Object(user);
+    return user;
   }
 }
 
 class AuthLoginUserController {
   public async login(req: Request) {
-    let { password } = req.body;
+    let { password, email } = req.body;
 
     let authValidationController = new AuthValidationController();
     let accountUser: IUser | null =
-      await authValidationController.verifyAccount(req);
+      await authValidationController.verifyAccount(email);
 
     if (!accountUser) return null;
 
     let isTheSamePassword = await this.verifyPassword(accountUser, password);
-    // console.log("isTheSamePassword: ", isTheSamePassword);
 
     if (isTheSamePassword)
       return await authValidationController.createJsonWebToken(accountUser);
@@ -89,10 +103,21 @@ class AuthRegisterController {
     let { name, email, password } = req.body;
 
     let authValidationController = new AuthValidationController();
+
+    let messageVerifyEmail = await authValidationController.verifyEmail(email);
+
+    if (messageVerifyEmail !== null) return messageVerifyEmail;
+
     let userHaveAccount: IUser | null =
-      await authValidationController.verifyAccount(req);
+      await authValidationController.verifyAccount(email);
 
     if (userHaveAccount) return null;
+
+    let messageVerifyPassword = await authValidationController.verifyPassword(
+      password
+    );
+
+    if (messageVerifyPassword !== null) return messageVerifyPassword;
 
     let modelUser: IUser = {
       name,
