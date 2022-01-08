@@ -47,8 +47,10 @@ class AuthValidationController {
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    let { token } = req.body;
+    let token = req.body["token"];
+
     if (!token) return res.send(null);
+    
     try {
       let payload = jwt.verify(token, String(process.env.JWT_KEY));
       res.locals.user = Object(payload);
@@ -70,7 +72,9 @@ class AuthValidationController {
 
 class AuthLoginUserController {
   public async login(req: Request) {
-    let { password, email } = req.body;
+    let { data } = req.body;
+
+    let { password, email } = data;
 
     let authValidationController = new AuthValidationController();
     let accountUser: IUser | null =
@@ -100,7 +104,8 @@ class AuthRegisterController {
   }
 
   public async registerUser(req: Request): Promise<string | null> {
-    let { name, email, password } = req.body;
+    let { data } = req.body;
+    let { name, email, password } = data;
 
     let authValidationController = new AuthValidationController();
 
