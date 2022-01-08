@@ -1,11 +1,13 @@
 //---- Databases
 import { Request, Response } from "express";
+import IDrink from "../interfaces/drink";
+import DrinkModel from "../models/drinkModel";
 
 //---- Settings
 import connect from "../settings/mongoDB";
 
 class ShopControllerShow {
-  async getData(req: Request, res: Response): Promise<Object[]> {
+  public async getData(req: Request, res: Response): Promise<Object[]> {
     const conn = await connect();
     if (req.query.drink == null)
       return await conn.collection("drinks").find().toArray();
@@ -18,6 +20,11 @@ class ShopControllerShow {
           },
         })
         .toArray();
+  }
+  public async getProductById(
+    idProduct: string
+  ): Promise<IDrink | null | undefined> {
+    return await DrinkModel.findById(idProduct);
   }
 }
 
